@@ -13,22 +13,47 @@ import org.springframework.stereotype.Repository;
 import com.springdemo.entity.Translation;
 
 @Repository
-public class TranslationDAOImpl {
+public class TranslationDAOImpl implements TranslationDAO {
 
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	@Transactional
+	@Override
 	public List<Translation> getTranslations() {
-		
 		//get current hibernate session and create query
 		Session currentSession = sessionFactory.getCurrentSession();
 		
 		//order by last name
 		Query <Translation> theQuery = currentSession.createQuery("from Translation", Translation.class);
-		List<Translation> translations = theQuery.getResultList();
  		
-		return translations;
+		return theQuery.getResultList();
+	}
+
+	@Override
+	public Translation getTranslation(int theId) {
+		//get current hibernate session and create query
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		return currentSession.get(Translation.class, theId);
+	}
+
+	@Override
+	public void updateTranslation(Translation theTranslation) {
+		//get current hibernate session and create query
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		currentSession.saveOrUpdate(theTranslation);
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public void deleteTranslation(int theId) {
+		//get current hibernate session and create query
+		Session currentSession = sessionFactory.getCurrentSession();
+
+		Query theQuery = currentSession.createQuery("delete from Translation where id=:translationId");
+		theQuery.setParameter("translationId", theId);
+		theQuery.executeUpdate();
 	}
 	
 }

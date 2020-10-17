@@ -6,54 +6,35 @@
 <head>
 	<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<title>Save Customer</title>
+	<title>Edit Translation</title>
 </head>
 
 <body>
 
 	<div id="wrapper">
-		<div id="header">
-			<h2>CRM - Customer Relationship Manager</h2>
+		<div id="header" style="text-align:center;">
+			<h1>Husita Project</h1>
 		</div>	
-	</div><br>
+	</div><hr><br>
 	
 	<div id="container">
-		<h4>Save Customer</h4><hr>
 		
-		<form:form action="saveCustomer" modelAttribute="customer" method="POST">
+		<form:form action="updateTranslation" modelAttribute="translation" 
+			method="POST" class="text-center">
 		
 			<!-- it will set the id to the customer, in case it has any. It will in edit customer, not in new customer -->
 			<form:hidden path="id" />
-		
-			<table>
-				<tbody>
-					
-					<tr>
-						<td><label>First name:</label></td>
-						<td><form:input path="firstName" /></td>
-					</tr>
-					
-					<tr>
-						<td><label>Last name:</label></td>
-						<td><form:input path="lastName" /></td>
-					</tr>
-					
-					<tr>
-						<td><label>Email:</label></td>
-						<td><form:input path="email" /></td>
-					</tr>
-					
-				</tbody>
-			</table><br>
+			
+			<form:input path="sentSpanish" type="text" class="form-control form-control-lg text-center" placeholder="English sentence" />		
+			<form:input path="sentEnglish" type="text" class="form-control form-control-lg text-center mt-2" placeholder="Frase en español" />
+			<input type="submit" value="Save" class="btn btn-success btn-lg mt-4" />
 
-			<input type="submit" value="Save" class="btn btn-primary" />
-		
 		</form:form><br>
 		
 		<div style="clear; both;">
-			<a href="${pageContext.request.contextPath}/customer/list">Back to list</a>
+			<a href="${pageContext.request.contextPath}/translation/list">Back to list</a>
 		</div>
-		
+			
 	</div>
 
 </body>

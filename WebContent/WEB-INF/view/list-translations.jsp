@@ -29,28 +29,36 @@
 
 	<div id="wrapper">
 		<div id="header" style="text-align:center;">
-			<h2>Husita Project</h2>
+			<h1>Husita Project</h1>
 		</div>	
-	</div><br>
+	</div><hr><br>
 	
 	
 	<div id="container">
 		<div id="content">
 		
-	    <form class="form-inline ml-auto">
-	      
-			<div class="md-form my-0">
-		    	<input class="form-control" type="text" placeholder="Search" aria-label="Search">
-			</div>
-		      
-			<button href="#!" class="btn btn-dark btn-md my-0 mr-sm-2" type="submit">Search</button>
-		      
-			<div class="btn-group">
-				<button type="button" class="btnChanges btn btn-dark active">English</button>
-				<button type="button" class="btnChanges btn btn-secondary inactive">Spanish</button>
-			</div>
-	      
-	    </form><br>
+		<div class="row">
+			<div class="col-md-10">
+			    <form class="form-inline">
+				    <input class="form-control form-control-lg" type="text" placeholder="Search / Buscar">
+				      
+					<button class="btn btn-dark btn-lg mr-sm-2 active" href="#!" type="submit">Search</button>
+				      
+					<div class="btn-group">
+						<button type="button" class="btnChanges btn btn-lg btn-dark active">ENG</button>
+						<button type="button" class="btnChanges btn btn-lg btn-secondary inactive">ESP</button>
+					</div>
+			    </form><br>
+		    </div>
+		    
+		    <div class="col-md-2 text-right">
+		    	<form>
+					<button type="button" class="btn btn-success btn-lg">
+						<i class="fas fa-plus"></i>
+					</button>
+			    </form><br>
+		    </div>
+	    </div>
 
 		
 		<!-- TABLE WITH TRANSLATIONS -->
@@ -59,23 +67,33 @@
 		        <tr class="d-flex">
 		        	<th class="col-5">English</th>
 		            <th class="col-5">Spanish</th>
-		            <th class="col-2">17/10/20</th>
+		            <th class="col-2">18/10/20</th>
 		        </tr>
 		    </thead>
 		    
 		    <!-- loop and print translations -->
 		    <c:forEach var="tempTranslation" items="${translations}">
+		    
+		    	<!-- build an update link adding a variable with the translation id. The value is a requestedMapping -->
+				<c:url var="updateLink" value="/translation/showFormUpdate">
+					<c:param name="translationId" value="${tempTranslation.id}" />
+				</c:url>
+				
+				<!-- delete link -->
+				<c:url var="deleteLink" value="/translation/deleteTranslation">
+					<c:param name="translationId" value="${tempTranslation.id}" />
+				</c:url>
 		        
 		        <tr class="d-flex">
 		        	<td class="col-5 align-middle">${tempTranslation.sentEnglish}</td>
 		            <td class="col-5 align-middle">${tempTranslation.sentSpanish}</td>
 		            <td class="col-1 align-middle">
-		            	<button class="btn btn-info">
+		            	<button class="btn btn-info" onclick="window.location.href='${updateLink}'; return false;">
 	                        <i class="fas fa-pencil-alt"></i>
 	                    </button>
 		            </td>
 		            <td class="col-1 align-middle">
-	                    <button class="btn btn-danger">
+	                    <button class="btn btn-danger" onclick="window.location.href='${deleteLink}'; return false;">
 	                        <i class="fas fa-minus"></i>
 	                    </button>
 		            </td>
