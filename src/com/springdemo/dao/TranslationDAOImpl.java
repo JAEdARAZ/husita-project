@@ -2,8 +2,6 @@ package com.springdemo.dao;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -23,8 +21,9 @@ public class TranslationDAOImpl implements TranslationDAO {
 		//get current hibernate session and create query
 		Session currentSession = sessionFactory.getCurrentSession();
 		
-		//order by last name
-		Query <Translation> theQuery = currentSession.createQuery("from Translation", Translation.class);
+		//order by date
+		Query <Translation> theQuery = currentSession.createQuery("from Translation order by date desc, id desc", 
+																	Translation.class);
  		
 		return theQuery.getResultList();
 	}

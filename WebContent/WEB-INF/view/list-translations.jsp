@@ -60,46 +60,50 @@
 		    </div>
 	    </div>
 
+		    
+	    <!-- loop and print translations using Map<String, List<Translation>> -->
+	    <c:forEach var="dateAndTranslations" items="${mapTranslations}">
+	    
+	    	<!-- TABLE HEADER -->
+	    	<table class="table table-bordered text-center">
+		    	<thead class="thead-dark">
+			        <tr class="d-flex">
+			        	<th class="col-5">English</th>
+			            <th class="col-5">Spanish</th>
+			            <th class="col-2">${dateAndTranslations.key}</th>
+			        </tr>
+			    </thead>
+		    
+		    	<!-- TABLE BODY -->
+		    	<c:forEach var="tempTranslation" items="${dateAndTranslations.value}">
+			    	<!-- UPDATE AND DELETE LINKS -->
+					<c:url var="updateLink" value="/translation/showFormUpdate">
+						<c:param name="translationId" value="${tempTranslation.id}" />
+					</c:url>
+					
+					<c:url var="deleteLink" value="/translation/deleteTranslation">
+						<c:param name="translationId" value="${tempTranslation.id}" />
+					</c:url>
+			        
+			        <tr class="d-flex">
+			        	<td class="col-5 align-middle">${tempTranslation.sentEnglish}</td>
+			            <td class="col-5 align-middle">${tempTranslation.sentSpanish}</td>
+			            <td class="col-1 align-middle">
+			            	<button class="btn btn-info" onclick="window.location.href='${updateLink}'; return false;">
+		                        <i class="fas fa-pencil-alt"></i>
+		                    </button>
+			            </td>
+			            <td class="col-1 align-middle">
+		                    <button class="btn btn-danger" onclick="window.location.href='${deleteLink}'; return false;">
+		                        <i class="fas fa-minus"></i>
+		                    </button>
+			            </td>
+			        </tr>
+	        	</c:forEach>
+	        </table><br>
+	        
+	    </c:forEach>
 		
-		<!-- TABLE WITH TRANSLATIONS -->
-		<table class="table table-bordered text-center">
-		    <thead class="thead-dark">
-		        <tr class="d-flex">
-		        	<th class="col-5">English</th>
-		            <th class="col-5">Spanish</th>
-		            <th class="col-2">18/10/20</th>
-		        </tr>
-		    </thead>
-		    
-		    <!-- loop and print translations -->
-		    <c:forEach var="tempTranslation" items="${translations}">
-		    
-		    	<!-- build an update link adding a variable with the translation id. The value is a requestedMapping -->
-				<c:url var="updateLink" value="/translation/showFormUpdate">
-					<c:param name="translationId" value="${tempTranslation.id}" />
-				</c:url>
-				
-				<!-- delete link -->
-				<c:url var="deleteLink" value="/translation/deleteTranslation">
-					<c:param name="translationId" value="${tempTranslation.id}" />
-				</c:url>
-		        
-		        <tr class="d-flex">
-		        	<td class="col-5 align-middle">${tempTranslation.sentEnglish}</td>
-		            <td class="col-5 align-middle">${tempTranslation.sentSpanish}</td>
-		            <td class="col-1 align-middle">
-		            	<button class="btn btn-info" onclick="window.location.href='${updateLink}'; return false;">
-	                        <i class="fas fa-pencil-alt"></i>
-	                    </button>
-		            </td>
-		            <td class="col-1 align-middle">
-	                    <button class="btn btn-danger" onclick="window.location.href='${deleteLink}'; return false;">
-	                        <i class="fas fa-minus"></i>
-	                    </button>
-		            </td>
-		        </tr>
-		    </c:forEach>
-		</table>
 		
 		</div>	
 	</div>

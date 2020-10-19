@@ -1,6 +1,11 @@
 package com.springdemo.service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -18,8 +23,27 @@ public class TranslationServiceImpl implements TranslationService {
 	
 	@Override
 	@Transactional
-	public List<Translation> getTranslations() {
-		return translationDAO.getTranslations();
+	public Map<String, ArrayList<Translation>> getTranslations() {
+		List<Translation> translations = translationDAO.getTranslations();
+		Map<String, ArrayList<Translation>> mapDateTranslation = new LinkedHashMap<String, ArrayList<Translation>>();
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		
+		//key = [date of translation], value = [list of translations from that date] 
+		for(Translation t : translations){
+			String dateTranslation = df.format(t.getDate());
+			ArrayList<Translation> transListAux = mapDateTranslation.get(dateTranslation);
+			
+			if (transListAux == null) {
+				transListAux = new ArrayList<Translation>();
+				transListAux.add(t);
+				mapDateTranslation.put(dateTranslation, transListAux);
+			}
+			else {
+				mapDateTranslation.get(dateTranslation).add(t);
+			}
+		}
+		
+		return mapDateTranslation;
 	}
 
 	@Override

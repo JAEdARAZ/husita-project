@@ -1,6 +1,7 @@
 package com.springdemo.controller;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,8 +25,13 @@ public class TranslationController {
 	
 	@GetMapping("/list")
 	public String listTranslations(Model theModel) {
-		List<Translation> translations = translationService.getTranslations();
-		theModel.addAttribute("translations", translations);
+		Map<String, ArrayList<Translation>> translations = translationService.getTranslations();
+		theModel.addAttribute("mapTranslations", translations);
+		
+		//print
+		System.out.println("------------------------");
+		translations.forEach((key, value) -> System.out.println(key + ":" + value));
+		System.out.println("------------------------");
 		
 		return "list-translations";
 	}

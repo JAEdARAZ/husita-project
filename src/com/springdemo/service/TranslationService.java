@@ -1,12 +1,13 @@
 package com.springdemo.service;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
 
 import com.springdemo.entity.Translation;
 
 public interface TranslationService {
 
-	public List<Translation> getTranslations();
+	public Map<String, ArrayList<Translation>> getTranslations();
 	
 	public Translation getTranslation(int theId);
 

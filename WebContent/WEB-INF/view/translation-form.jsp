@@ -25,8 +25,8 @@
 			<!-- it will set the id to the customer, in case it has any. It will in edit customer, not in new customer -->
 			<form:hidden path="id" />
 			
-			<form:input path="sentSpanish" type="text" class="form-control form-control-lg text-center" placeholder="English sentence" />		
-			<form:input path="sentEnglish" type="text" class="form-control form-control-lg text-center mt-2" placeholder="Frase en español" />
+			<form:input path="sentEnglish" type="text" class="form-control form-control-lg text-center" placeholder="English sentence" />		
+			<form:input path="sentSpanish" type="text" class="form-control form-control-lg text-center mt-2" placeholder="Frase en español" />
 			<input type="submit" value="Save" class="btn btn-success btn-lg mt-4" />
 
 		</form:form><br>
