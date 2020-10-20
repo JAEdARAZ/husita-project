@@ -28,11 +28,6 @@ public class TranslationController {
 		Map<String, ArrayList<Translation>> translations = translationService.getTranslations();
 		theModel.addAttribute("mapTranslations", translations);
 		
-		//print
-		System.out.println("------------------------");
-		translations.forEach((key, value) -> System.out.println(key + ":" + value));
-		System.out.println("------------------------");
-		
 		return "list-translations";
 	}
 	
@@ -51,11 +46,9 @@ public class TranslationController {
 		return "redirect:/translation/list";
 	}
 	
-	@GetMapping("/deleteTranslation")
-	public String deleteTranslation(@RequestParam("translationId") int theId) {
-		translationService.deleteTranslation(theId);
-		
-		return "redirect:/translation/list";
+	@GetMapping("/insertTranslations")
+	public String insertTranslations(Model theModel) {
+		return "insertion-table-form";
 	}
 	
 }

@@ -53,9 +53,9 @@
 		    
 		    <div class="col-md-2 text-right">
 		    	<form>
-					<button type="button" class="btn btn-success btn-lg">
+					<a class="btn btn-success btn-lg" href="${pageContext.request.contextPath}/translation/insertTranslations" role="button">
 						<i class="fas fa-plus"></i>
-					</button>
+					</a>
 			    </form><br>
 		    </div>
 	    </div>
