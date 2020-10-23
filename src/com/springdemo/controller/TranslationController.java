@@ -58,4 +58,11 @@ public class TranslationController {
 		return "redirect:/translation/list";
 	}
 	
+	@GetMapping("/deleteTranslation")
+	public String deleteTranslation(@RequestParam("translationId") int theId, Model theModel) {
+		translationService.deleteTranslation(theId);
+		
+		return "redirect:/translation/list";
+	}
+	
 }
