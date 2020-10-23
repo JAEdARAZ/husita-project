@@ -14,5 +14,7 @@ public interface TranslationService {
 	public void updateTranslation(Translation theTranslation);
 
 	public void deleteTranslation(int theId);
+
+	public void insertTranslations(String areaTranslations);
 	
 }

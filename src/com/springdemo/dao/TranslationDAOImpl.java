@@ -41,7 +41,7 @@ public class TranslationDAOImpl implements TranslationDAO {
 		//get current hibernate session and create query
 		Session currentSession = sessionFactory.getCurrentSession();
 		
-		currentSession.saveOrUpdate(theTranslation);
+		currentSession.update(theTranslation);
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -53,6 +53,14 @@ public class TranslationDAOImpl implements TranslationDAO {
 		Query theQuery = currentSession.createQuery("delete from Translation where id=:translationId");
 		theQuery.setParameter("translationId", theId);
 		theQuery.executeUpdate();
+	}
+
+	@Override
+	public void insertTranslations(Translation translation) {
+		//get current hibernate session and create query
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		currentSession.save(translation);
 	}
 	
 }

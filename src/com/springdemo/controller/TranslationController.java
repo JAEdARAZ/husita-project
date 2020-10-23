@@ -46,9 +46,16 @@ public class TranslationController {
 		return "redirect:/translation/list";
 	}
 	
-	@GetMapping("/insertTranslations")
-	public String insertTranslations(Model theModel) {
+	@GetMapping("/showInsertForm")
+	public String showInsertForm(Model theModel) {
 		return "insertion-table-form";
+	}
+	
+	@PostMapping("/insertTranslations")
+	public String insertTranslations(@RequestParam("areaTranslations") String areaTranslations, Model theModel) {
+		translationService.insertTranslations(areaTranslations);
+		
+		return "redirect:/translation/list";
 	}
 	
 }

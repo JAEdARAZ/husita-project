@@ -1,5 +1,6 @@
 package com.springdemo.service;
 
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -63,6 +64,33 @@ public class TranslationServiceImpl implements TranslationService {
 	public void deleteTranslation(int theId) {
 		translationDAO.deleteTranslation(theId);
 		
+	}
+
+	@Override
+	@Transactional
+	public void insertTranslations(String areaTranslations) {
+		//split by new line
+		String[] translations = areaTranslations.split("\\r?\\n");
+		
+		List<Translation> translationsToInsert = new ArrayList<>();
+		long now = System.currentTimeMillis();
+		
+		for(String t : translations) {
+			t = t.replace("#", "");
+			t = t.trim();
+			String[] sentenceEngEsp = t.split("-");
+			
+			Translation auxTrans = new Translation();
+			auxTrans.setSentEnglish(sentenceEngEsp[0]);
+			auxTrans.setSentSpanish(sentenceEngEsp[1]);
+			auxTrans.setDate(new Timestamp(now));
+			
+			translationsToInsert.add(auxTrans);
+		}
+		
+		for(Translation t : translationsToInsert) {
+			translationDAO.insertTranslations(t);
+		}
 	}
 
 }

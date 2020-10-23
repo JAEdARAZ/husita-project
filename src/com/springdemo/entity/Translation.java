@@ -1,6 +1,6 @@
 package com.springdemo.entity;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,7 +25,7 @@ public class Translation {
 	private String sentEnglish;
 	
 	@Column(name="date")
-	private Date date;
+	private Timestamp date;
 	
 	
 	public Translation() {}
@@ -54,11 +54,11 @@ public class Translation {
 		this.sentEnglish = sentEnglish;
 	}
 
-	public Date getDate() {
+	public Timestamp getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(Timestamp date) {
 		this.date = date;
 	}
 

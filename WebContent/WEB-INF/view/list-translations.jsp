@@ -53,7 +53,7 @@
 		    
 		    <div class="col-md-2 text-right">
 		    	<form>
-					<a class="btn btn-success btn-lg" href="${pageContext.request.contextPath}/translation/insertTranslations" role="button">
+					<a class="btn btn-success btn-lg" href="${pageContext.request.contextPath}/translation/showInsertForm" role="button">
 						<i class="fas fa-plus"></i>
 					</a>
 			    </form><br>

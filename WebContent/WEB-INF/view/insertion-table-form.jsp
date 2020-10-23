@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <!DOCTYPE html>
 
 <html>
@@ -13,10 +14,17 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$("#checkTranslations").click(function(){
-				var translations = $("#areaTranslations").val().split("\n");
+				var translations = $("#areaTranslations").val();
+				
+				//remove # in case it's not the first time check is used
+				translations = translations.replaceAll("# ","");
+				translations = translations.replaceAll(" #","");
+				translations = translations.split("\n");
+				
 				//remove empty values
 				translations = translations.filter(function(e){return e});
 				
+				//what's between # will go to DB as a translation
 				translations.forEach((val, index) => translations[index] = "# " + val + " #");
 				$("#areaTranslations").val(translations.join("\n"));
 		    }); 
@@ -30,24 +38,20 @@
 		<div id="header" style="text-align:center;">
 			<h1>Husita Project</h1>
 		</div>	
-	</div><hr><br>
+	</div><hr><br/>
 	
-	<form>
+	<form method="POST" action="${pageContext.request.contextPath}/translation/insertTranslations">
 		<div class="form-group text-center">
-			<h4>new translations / nuevas traducciones</h4>
-			<textarea id="areaTranslations" class="form-control text-center" rows="15" autofocus></textarea>
+			<h4>new translations / nuevas traducciones (ENG - ESP)</h4>
+			<textarea id="areaTranslations" name="areaTranslations" class="form-control text-center" rows="12" autofocus></textarea>
 		</div>
 		
 		<div class="text-center">
-			<a id="checkTranslations" class="btn btn-primary btn-lg" role="button">
-				<span>CHECK</span>
-			</a>
+			<input id="checkTranslations" type="button" class="btn btn-primary btn-lg mt-2" value="CHECK" />
 		</div>
 		
 		<div class="text-center">
-			<a class="btn btn-success btn-lg mt-2" href="${pageContext.request.contextPath}/translation/insertTranslations" role="button">
-				<span>SAVE!</span>
-			</a>
+			<input type="submit" role="button" class="btn btn-success btn-lg mt-2" value="SAVE!" />
 		</div>
 	</form>
 
