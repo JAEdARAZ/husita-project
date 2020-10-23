@@ -1,6 +1,7 @@
 package com.springdemo.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,5 +65,15 @@ public class TranslationController {
 		
 		return "redirect:/translation/list";
 	}
+	
+	@GetMapping("/searchTranslations")
+	public String searchTranslations(@RequestParam("word") String word, Model theModel) {
+		String language = "eng"; 
+		List<Translation> searchTranslations = translationService.getSearchTranslations(word, language);
+		theModel.addAttribute("searchTranslations", searchTranslations);
+		
+		return "search-list";
+	}
+	
 	
 }

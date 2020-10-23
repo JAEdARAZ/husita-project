@@ -15,5 +15,9 @@ public interface TranslationDAO {
 	public void deleteTranslation(int theId);
 
 	public void insertTranslations(Translation translations);
+
+	public List<Translation> getEngSearch(String word);
+	
+	public List<Translation> getEspSearch(String word);
 	
 }

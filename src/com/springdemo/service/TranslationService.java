@@ -1,6 +1,7 @@
 package com.springdemo.service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.springdemo.entity.Translation;
@@ -16,5 +17,7 @@ public interface TranslationService {
 	public void deleteTranslation(int theId);
 
 	public void insertTranslations(String areaTranslations);
+
+	public List<Translation> getSearchTranslations(String word, String language);
 	
 }

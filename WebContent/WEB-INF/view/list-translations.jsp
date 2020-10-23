@@ -39,10 +39,11 @@
 		
 		<div class="row">
 			<div class="col-md-10">
-			    <form class="form-inline">
-				    <input class="form-control form-control-lg" type="text" placeholder="Search / Buscar">
+			    <form class="form-inline" method="GET" action="${pageContext.request.contextPath}/translation/searchTranslations">
+				    <input id="word" name="word" 
+				    	class="form-control form-control-lg" type="text" placeholder="Search / Buscar">
 				      
-					<button class="btn btn-dark btn-lg mr-sm-2 active" href="#!" type="submit">Search</button>
+					<button class="btn btn-dark btn-lg mr-sm-2 active" type="submit">Search</button>
 				      
 					<div class="btn-group">
 						<button type="button" class="btnChanges btn btn-lg btn-dark active">ENG</button>

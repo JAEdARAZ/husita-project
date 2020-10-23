@@ -93,4 +93,12 @@ public class TranslationServiceImpl implements TranslationService {
 		}
 	}
 
+	@Override
+	@Transactional
+	public List<Translation> getSearchTranslations(String word, String language) {
+		List<Translation> searchTranslations = translationDAO.getEngSearch(word);
+		
+		return searchTranslations;
+	}
+
 }
