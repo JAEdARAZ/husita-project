@@ -78,8 +78,15 @@ public class TranslationDAOImpl implements TranslationDAO {
 
 	@Override
 	public List<Translation> getEspSearch(String word) {
-		// TODO Auto-generated method stub
-		return null;
+		//get current hibernate session and create query
+		Session currentSession = sessionFactory.getCurrentSession();
+				
+		//order by date and id
+		Query <Translation> theQuery = currentSession.createQuery("from Translation "
+																+ "where sentSpanish like :word "
+																+ "order by date desc, id desc", Translation.class);
+		theQuery.setParameter("word", "%" + word + "%");
+		return theQuery.getResultList();
 	}
 	
 }

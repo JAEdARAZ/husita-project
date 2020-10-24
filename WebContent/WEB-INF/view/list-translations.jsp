@@ -19,6 +19,14 @@
 				$(this).removeClass('inactive').addClass('active');
 				$(this).removeClass('btn-secondary').addClass('btn-dark');
 			});
+			
+			$('#engBtn').click(function(){
+				$('#langButtonSelected').val('eng');
+			});
+			
+			$('#espBtn').click(function(){
+				$('#langButtonSelected').val('esp');
+			});
 		});
 	</script>
 	
@@ -40,15 +48,18 @@
 		<div class="row">
 			<div class="col-md-10">
 			    <form class="form-inline" method="GET" action="${pageContext.request.contextPath}/translation/searchTranslations">
-				    <input id="word" name="word" 
+				    <input name="word" 
 				    	class="form-control form-control-lg" type="text" placeholder="Search / Buscar">
 				      
 					<button class="btn btn-dark btn-lg mr-sm-2 active" type="submit">Search</button>
 				      
 					<div class="btn-group">
-						<button type="button" class="btnChanges btn btn-lg btn-dark active">ENG</button>
-						<button type="button" class="btnChanges btn btn-lg btn-secondary inactive">ESP</button>
+						<button id="engBtn" type="button" class="btnChanges btn btn-lg btn-dark active">ENG</button>
+						<button id="espBtn" type="button" class="btnChanges btn btn-lg btn-secondary inactive">ESP</button>
 					</div>
+					
+					<!-- store the value of the  -->
+					<input type="hidden" id="langButtonSelected" name="langButtonSelected" value="eng" />
 			    </form><br>
 		    </div>
 		    

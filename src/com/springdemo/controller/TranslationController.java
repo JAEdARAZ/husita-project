@@ -67,8 +67,8 @@ public class TranslationController {
 	}
 	
 	@GetMapping("/searchTranslations")
-	public String searchTranslations(@RequestParam("word") String word, Model theModel) {
-		String language = "eng"; 
+	public String searchTranslations(@RequestParam("word") String word, 
+										@RequestParam("langButtonSelected") String language, Model theModel) {
 		List<Translation> searchTranslations = translationService.getSearchTranslations(word, language);
 		theModel.addAttribute("searchTranslations", searchTranslations);
 		
