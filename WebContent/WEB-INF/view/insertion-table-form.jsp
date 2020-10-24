@@ -35,10 +35,19 @@
 <body>
 
 	<div id="wrapper">
-		<div id="header" style="text-align:center;">
-			<h1>Husita Project</h1>
+		<div class="row" id="header" style="text-align:center;">
+			<div class="col-md-2 text-left">
+				<a class="btn btn-info btn-lg" href="${pageContext.request.contextPath}/translation/list" role="button">
+					<i class="fas fa-arrow-left"></i>
+				</a>
+			</div>
+			<div class="col-md-8">
+				<h1>Husita Project</h1>
+			</div>
+			<div class="col-md-2">
+			</div>
 		</div>	
-	</div><hr><br/>
+	</div><hr><br>
 	
 	<form method="POST" action="${pageContext.request.contextPath}/translation/insertTranslations">
 		<div class="form-group text-center">
