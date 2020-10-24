@@ -8,7 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -94,17 +94,35 @@ public class TranslationServiceImpl implements TranslationService {
 	}
 
 	@Override
-	@Transactional
+	@Transactional(readOnly=true)
 	public List<Translation> getSearchTranslations(String word, String language) {
 		List<Translation> searchTranslations;
 		if(language.equals("eng")) {
-			searchTranslations = translationDAO.getEngSearch(word);			
+			searchTranslations = translationDAO.getEngSearch(word);
 		}
 		else {
 			searchTranslations = translationDAO.getEspSearch(word);
 		}
 		
+		boldSearchedWord(searchTranslations, word, language);
 		return searchTranslations;
+	}
+	
+	private void boldSearchedWord (List<Translation> translations, String word, String language){
+		if(language.equals("eng")) {
+			for(Translation t : translations) {
+				String sentenceEng = t.getSentEnglish();
+				sentenceEng = sentenceEng.replace(word, "<b>" + word + "</b>");
+				t.setSentEnglish(sentenceEng);
+			}
+		}
+		else {
+			for(Translation t : translations) {
+				String sentenceEsp = t.getSentSpanish();
+				sentenceEsp = sentenceEsp.replace(word, "<b>" + word + "</b>");
+				t.setSentSpanish(sentenceEsp);
+			}
+		}
 	}
 
 }

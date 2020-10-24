@@ -70,6 +70,13 @@ public class TranslationController {
 	public String searchTranslations(@RequestParam("word") String word, 
 										@RequestParam("langButtonSelected") String language, Model theModel) {
 		List<Translation> searchTranslations = translationService.getSearchTranslations(word, language);
+
+		String titleSearch = "Results search: '" + word + "'";
+		if(language.equals("esp")) {
+			titleSearch = "Resultados búsqueda: '" + word + "'";
+		}
+		
+		theModel.addAttribute("titleSearch", titleSearch);
 		theModel.addAttribute("searchTranslations", searchTranslations);
 		
 		return "search-list";
