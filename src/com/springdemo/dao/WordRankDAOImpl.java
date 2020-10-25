@@ -2,8 +2,6 @@ package com.springdemo.dao;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -19,7 +17,6 @@ public class WordRankDAOImpl implements WordRankDAO {
 	private SessionFactory sessionFactory;
 
 	@Override
-	@Transactional
 	public List<WordRank> getRanking() {
 		Session currentSession = sessionFactory.getCurrentSession();
 		
@@ -28,6 +25,20 @@ public class WordRankDAOImpl implements WordRankDAO {
 		theQuery.setMaxResults(20);
 		
 		return theQuery.getResultList();
+	}
+
+	@Override
+	public List<WordRank> getAllWords() {
+		Session currentSession = sessionFactory.getCurrentSession();
+		Query <WordRank> theQuery = currentSession.createQuery("from WordRank", WordRank.class);
+		
+		return theQuery.getResultList();
+	}
+
+	@Override
+	public void saveUpdateWord(WordRank w) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		currentSession.saveOrUpdate(w);
 	}
 	
 }

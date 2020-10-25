@@ -6,6 +6,10 @@ import com.springdemo.entity.WordRank;
 
 public interface WordRankService {
 
-	List<WordRank> getRanking();
+	public List<WordRank> getRanking();
+	
+	public List<WordRank> getAllWords ();
+
+	public void processAddedWords(String areaTranslations);
 
 }

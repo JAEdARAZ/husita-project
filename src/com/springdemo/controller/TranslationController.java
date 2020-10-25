@@ -60,6 +60,7 @@ public class TranslationController {
 	@PostMapping("/insertTranslations")
 	public String insertTranslations(@RequestParam("areaTranslations") String areaTranslations, Model theModel) {
 		translationService.insertTranslations(areaTranslations);
+		wordRankService.processAddedWords(areaTranslations);
 		
 		return "redirect:/translation/list";
 	}
@@ -89,6 +90,7 @@ public class TranslationController {
 	
 	@GetMapping("/rankingWords")
 	public String rankingWords(Model theModel) {
+		wordRankService.processAddedWords("whatever");
 		List<WordRank> wordsRanked = wordRankService.getRanking();
 		theModel.addAttribute("listWords", wordsRanked);
 		

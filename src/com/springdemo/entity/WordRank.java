@@ -22,7 +22,14 @@ public class WordRank {
 	@Column(name="counter")
 	private int counter;
 	
+	
 	public WordRank () {}
+	
+	public WordRank (String wordEsp, int counter) {
+		this.wordEsp = wordEsp;
+		this.counter = counter;
+	}
+	
 
 	public int getId() {
 		return id;

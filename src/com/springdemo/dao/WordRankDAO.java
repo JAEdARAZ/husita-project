@@ -8,4 +8,8 @@ public interface WordRankDAO {
 
 	public List<WordRank> getRanking();
 
+	public List<WordRank> getAllWords();
+
+	public void saveUpdateWord(WordRank w);
+
 }
