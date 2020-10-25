@@ -47,9 +47,9 @@
 		<div id="content">
 		
 		<div class="row">
-			<div class="col-md-10">
+			<div class="col-md-8">
 			    <form class="form-inline" method="GET" action="${pageContext.request.contextPath}/translation/searchTranslations">
-				    <input name="word" 
+				    <input name="word" autocomplete="off"
 				    	class="form-control form-control-lg" type="text" placeholder="Search / Buscar">
 				      
 					<button class="btn btn-dark btn-lg mr-sm-2 active" type="submit">Search</button>
@@ -64,8 +64,12 @@
 			    </form><br>
 		    </div>
 		    
-		    <div class="col-md-2 text-right">
+		    <div class="col-md-4 text-right">
 		    	<form>
+		    		<a class="btn btn-warning btn-lg" href="${pageContext.request.contextPath}/translation/rankingWords" role="button">
+						<b>RANKING  </b><i class="fas fa-trophy"></i>
+					</a>
+		    		
 					<a class="btn btn-success btn-lg" href="${pageContext.request.contextPath}/translation/showInsertForm" role="button">
 						<i class="fas fa-plus"></i>
 					</a>

@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.springdemo.entity.Translation;
+import com.springdemo.entity.WordRank;
 import com.springdemo.service.TranslationService;
+import com.springdemo.service.WordRankService;
 
 
 @Controller
@@ -23,6 +25,9 @@ public class TranslationController {
 	
 	@Autowired
 	private TranslationService translationService;
+	
+	@Autowired
+	private WordRankService wordRankService;
 	
 	@GetMapping("/list")
 	public String listTranslations(Model theModel) {
@@ -69,8 +74,8 @@ public class TranslationController {
 	@GetMapping("/searchTranslations")
 	public String searchTranslations(@RequestParam("word") String word, 
 										@RequestParam("langButtonSelected") String language, Model theModel) {
+		
 		List<Translation> searchTranslations = translationService.getSearchTranslations(word, language);
-
 		String titleSearch = "Results search: '" + word + "'";
 		if(language.equals("esp")) {
 			titleSearch = "Resultados búsqueda: '" + word + "'";
@@ -82,5 +87,12 @@ public class TranslationController {
 		return "search-list";
 	}
 	
+	@GetMapping("/rankingWords")
+	public String rankingWords(Model theModel) {
+		List<WordRank> wordsRanked = wordRankService.getRanking();
+		theModel.addAttribute("listWords", wordsRanked);
+		
+		return "ranking-words";
+	}
 	
 }
