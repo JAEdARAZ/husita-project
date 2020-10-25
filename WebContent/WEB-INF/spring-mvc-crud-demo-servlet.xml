@@ -66,6 +66,9 @@
 	<!-- Add support for reading web resources: css, images, js, etc ... -->
 	<mvc:resources location="/resources/" mapping="/resources/**" />
 	
+	<!-- properties -->
+	<context:property-placeholder location="classpath:elements.properties"/> 
+	
 </beans>
 
 
