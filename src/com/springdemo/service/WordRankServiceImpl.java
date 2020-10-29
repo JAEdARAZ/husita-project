@@ -4,10 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.springdemo.dao.WordRankDAO;
 import com.springdemo.entity.WordRank;
@@ -35,7 +36,7 @@ public class WordRankServiceImpl implements WordRankService {
 	}
 
 	@Override
-	@Transactional(readOnly=true)
+	@Transactional
 	public void processAddedWords(String areaTranslations) {
 		//clean areaTranslations so I have a Map with <word, count>
 		Map<String, Integer> wordsAdded = processAreaTranslations(areaTranslations);
@@ -96,11 +97,7 @@ public class WordRankServiceImpl implements WordRankService {
 			}
 		}
 		
-		wordsCount.entrySet().forEach(entry->{
-			System.out.println(entry.getKey() + " - " + entry.getValue());  
-		});
-		
-		return null;
+		return wordsCount;
 	}
 
 }
