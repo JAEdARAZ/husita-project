@@ -12,4 +12,6 @@ public interface WordRankService {
 
 	public void processAddedWords(String areaTranslations);
 
+	public void processUpdatedSentence(String oldSentSpanish, String newSentSpanish);
+
 }

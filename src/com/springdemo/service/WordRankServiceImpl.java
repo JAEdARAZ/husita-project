@@ -1,8 +1,11 @@
 package com.springdemo.service;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -66,11 +69,29 @@ public class WordRankServiceImpl implements WordRankService {
 		}
 	}
 
+	@Override
+	@Transactional
+	public void processUpdatedSentence(String oldSentSpanish, String newSentSpanish) {
+		System.out.println("entro en el metodo");
+		
+		oldSentSpanish = oldSentSpanish.trim();
+		newSentSpanish = newSentSpanish.trim();
+		
+		String[] ArrOldSent = oldSentSpanish.split(" ");
+		String[] ArrNewSent = newSentSpanish.split(" ");
+		
+	    //GET ADDED WORDS: remove from newSentence all the words present in oldSentence
+	    Set<String> added = new HashSet<String>(Arrays.asList(ArrNewSent));
+	    added.removeAll(Arrays.asList(ArrOldSent));
+	    
+	    Set<String> removed = new HashSet<String>(Arrays.asList(ArrOldSent));
+	    removed.removeAll(Arrays.asList(ArrNewSent));
+	}
+	
 	@Transactional
 	private void saveUpdateWord(WordRank w) {
 		wordRankDAO.saveUpdateWord(w);
 	}
-
 	
 	private Map<String, Integer> processAreaTranslations(String areaTranslations) {
 		//remove # and split to have translations in an array

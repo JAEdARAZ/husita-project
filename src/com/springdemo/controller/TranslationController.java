@@ -33,7 +33,7 @@ public class TranslationController {
 	public String listTranslations(Model theModel) {
 		Map<String, ArrayList<Translation>> translations = translationService.getTranslations();
 		theModel.addAttribute("mapTranslations", translations);
-		
+
 		return "list-translations";
 	}
 	
@@ -47,6 +47,10 @@ public class TranslationController {
 	
 	@PostMapping("/updateTranslation")
 	public String updateTranslation(@ModelAttribute("translation") Translation theTranslation) {
+		//process changed words in ranking
+		Translation oldTranslation = translationService.getTranslation(theTranslation.getId());
+		wordRankService.processUpdatedSentence(oldTranslation.getSentSpanish(), theTranslation.getSentSpanish());
+		
 		translationService.updateTranslation(theTranslation);
 		
 		return "redirect:/translation/list";
