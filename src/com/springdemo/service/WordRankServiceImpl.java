@@ -83,9 +83,14 @@ public class WordRankServiceImpl implements WordRankService {
 	    //GET ADDED WORDS: remove from newSentence all the words present in oldSentence
 	    Set<String> added = new HashSet<String>(Arrays.asList(ArrNewSent));
 	    added.removeAll(Arrays.asList(ArrOldSent));
+	    //TODO add words in the ranking (maybe they already are there!)
 	    
+	    //GET REMOVED WORDS: remove from oldSentence all the words present in newSentence
 	    Set<String> removed = new HashSet<String>(Arrays.asList(ArrOldSent));
 	    removed.removeAll(Arrays.asList(ArrNewSent));
+	    //TODO decrease counter for words (what if counter goes to 0?)
+	    
+	    
 	}
 	
 	@Transactional
