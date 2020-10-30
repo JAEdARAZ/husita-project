@@ -72,22 +72,36 @@ public class WordRankServiceImpl implements WordRankService {
 	@Override
 	@Transactional
 	public void processUpdatedSentence(String oldSentSpanish, String newSentSpanish) {
-		//OLD SENTENCE: decrease the counter for the words
+		Map<String, Integer> diffCounter = new HashMap<String, Integer>(); 
+		
+		//OLD SENTENCE: decrease the counter for the words present
 		oldSentSpanish = oldSentSpanish.trim();
 		String[] ArrOldSent = oldSentSpanish.split(" ");
-		Map<String, Integer> wordsOldSent = countWordsSentence(ArrOldSent);
+		countWordsSentence(diffCounter, ArrOldSent, -1);
 		
-		for(Map.Entry<String, Integer> entry : wordsOldSent.entrySet()) {
-			wordRankDAO.decreaseCounter(entry.getKey(), entry.getValue());
-		}
-		
-		//NEW SENTENCE: add count for every word (there may be new ones to word_rank)
+		//NEW SENTENCE: increase the counters for the words present
 		newSentSpanish = newSentSpanish.trim();
 		String[] ArrNewSent = newSentSpanish.split(" ");
-		Map<String, Integer> wordsNewSent = countWordsSentence(ArrNewSent);
+		countWordsSentence(diffCounter, ArrNewSent, 1);
 		
-		if(wordsNewSent!=null) {
-			updateAddedWord(wordsNewSent);
+		//get all words from DB
+		List<WordRank> allWords = getAllWords();
+		Map<String, WordRank> wordsCountDB = new HashMap<String, WordRank>();
+		for(WordRank w : allWords) {
+			wordsCountDB.put(w.getWordEsp(), w);
+		}
+		
+		//change counters: <0 just decrease, >0 increase (the word could be a new one), 0 no action
+		for(Map.Entry<String, Integer> entry : diffCounter.entrySet()) {
+			int wordDiffCounter = entry.getValue();
+			
+			if(wordDiffCounter<0) {
+				wordRankDAO.decreaseCounter(entry.getKey(), wordDiffCounter);
+			}
+			
+			if(wordDiffCounter>0) {
+				updateAddedWord(entry, wordsCountDB);
+			}
 		}
 	}
 	
@@ -121,44 +135,30 @@ public class WordRankServiceImpl implements WordRankService {
 	}
 	
 	
-	private void updateAddedWord(Map<String, Integer> wordsNewSent) {
-		//get all words from DB
-		List<WordRank> allWords = getAllWords();
-		Map<String, WordRank> wordsCountDB = new HashMap<String, WordRank>();
-		for(WordRank w : allWords) {
-			wordsCountDB.put(w.getWordEsp(), w);
-		}
+	private void updateAddedWord(Map.Entry<String, Integer> wordCount, Map<String, WordRank> wordsCountDB) {
+		String wAdded = wordCount.getKey();
+		WordRank w = wordsCountDB.get(wAdded);
 		
-		//loop over added words, check if they are in the DB
-		for(Map.Entry<String, Integer> entry : wordsNewSent.entrySet()) {
-			//search in the words from DB Map
-			String wAdded = entry.getKey();
-			WordRank w = wordsCountDB.get(wAdded);
-			
-			if (w == null) { //the word is not in the DB
-				wordRankDAO.saveUpdateWord( new WordRank(wAdded, entry.getValue()) );
-			}
-			else { //counter in DB + counter new insertions 
-				w.setCounter(w.getCounter() + entry.getValue());
-				wordRankDAO.saveUpdateWord(w);
-			}
+		if (w == null) { //the word is not in the DB
+			wordRankDAO.saveUpdateWord( new WordRank(wAdded, wordCount.getValue()) );
+		}
+		else { //counter in DB + counter new insertions 
+			w.setCounter(w.getCounter() + wordCount.getValue());
+			wordRankDAO.saveUpdateWord(w);
 		}
 	}
 
 	
-	private Map<String, Integer> countWordsSentence(String[] words){
-		Map<String, Integer> wordsCounted = new HashMap<String, Integer>();
-		
+	//symbol: -1 for old sentence, +1 for new sentence
+	private void countWordsSentence(Map<String,Integer> diffCounter, String[] words, int symbol){
 		for(String w : words) {
-			Integer count = wordsCounted.get(w);
+			Integer count = diffCounter.get(w);
 			if(count == null) {
-				wordsCounted.put(w, 1);
+				diffCounter.put(w, symbol);
 			}
 			else {
-				wordsCounted.put(w, count+1);
+				diffCounter.put(w, count + symbol);
 			}
 		}
-		
-		return wordsCounted;
 	}
 }

@@ -50,7 +50,7 @@ public class WordRankDAOImpl implements WordRankDAO {
 		theQuery.setParameter("removedWord", removedWord);
 		WordRank w = theQuery.uniqueResult();
 		
-		w.setCounter(w.getCounter()-diffCounter);
+		w.setCounter(w.getCounter()+diffCounter); //diffCounter has negative value
 	}
 	
 }
