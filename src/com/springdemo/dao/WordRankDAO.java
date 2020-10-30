@@ -12,4 +12,6 @@ public interface WordRankDAO {
 
 	public void saveUpdateWord(WordRank w);
 
+	public void decreaseCounter(String removedWord, int diffCounter);
+
 }

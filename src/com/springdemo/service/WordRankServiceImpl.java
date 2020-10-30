@@ -59,11 +59,11 @@ public class WordRankServiceImpl implements WordRankService {
 				WordRank w = wordsCountDB.get(wAdded); //search in the words from DB Map
 				
 				if (w == null) { //the word is not in the DB
-					saveUpdateWord( new WordRank(wAdded, entry.getValue()) );
+					wordRankDAO.saveUpdateWord( new WordRank(wAdded, entry.getValue()) );
 				}
 				else { //update the counter (counter from DB + counter from wordsAdded) 
 					w.setCounter(w.getCounter() + entry.getValue());
-					saveUpdateWord(w);
+					wordRankDAO.saveUpdateWord(w);
 				}
 			}
 		}
@@ -72,31 +72,25 @@ public class WordRankServiceImpl implements WordRankService {
 	@Override
 	@Transactional
 	public void processUpdatedSentence(String oldSentSpanish, String newSentSpanish) {
-		System.out.println("entro en el metodo");
-		
+		//OLD SENTENCE: decrease the counter for the words
 		oldSentSpanish = oldSentSpanish.trim();
-		newSentSpanish = newSentSpanish.trim();
-		
 		String[] ArrOldSent = oldSentSpanish.split(" ");
-		String[] ArrNewSent = newSentSpanish.split(" ");
+		Map<String, Integer> wordsOldSent = countWordsSentence(ArrOldSent);
 		
-	    //GET ADDED WORDS: remove from newSentence all the words present in oldSentence
-	    Set<String> added = new HashSet<String>(Arrays.asList(ArrNewSent));
-	    added.removeAll(Arrays.asList(ArrOldSent));
-	    //TODO add words in the ranking (maybe they already are there!)
-	    
-	    //GET REMOVED WORDS: remove from oldSentence all the words present in newSentence
-	    Set<String> removed = new HashSet<String>(Arrays.asList(ArrOldSent));
-	    removed.removeAll(Arrays.asList(ArrNewSent));
-	    //TODO decrease counter for words (what if counter goes to 0?)
-	    
-	    
+		for(Map.Entry<String, Integer> entry : wordsOldSent.entrySet()) {
+			wordRankDAO.decreaseCounter(entry.getKey(), entry.getValue());
+		}
+		
+		//NEW SENTENCE: add count for every word (there may be new ones to word_rank)
+		newSentSpanish = newSentSpanish.trim();
+		String[] ArrNewSent = newSentSpanish.split(" ");
+		Map<String, Integer> wordsNewSent = countWordsSentence(ArrNewSent);
+		
+		if(wordsNewSent!=null) {
+			updateAddedWord(wordsNewSent);
+		}
 	}
 	
-	@Transactional
-	private void saveUpdateWord(WordRank w) {
-		wordRankDAO.saveUpdateWord(w);
-	}
 	
 	private Map<String, Integer> processAreaTranslations(String areaTranslations) {
 		//remove # and split to have translations in an array
@@ -125,5 +119,46 @@ public class WordRankServiceImpl implements WordRankService {
 		
 		return wordsCount;
 	}
+	
+	
+	private void updateAddedWord(Map<String, Integer> wordsNewSent) {
+		//get all words from DB
+		List<WordRank> allWords = getAllWords();
+		Map<String, WordRank> wordsCountDB = new HashMap<String, WordRank>();
+		for(WordRank w : allWords) {
+			wordsCountDB.put(w.getWordEsp(), w);
+		}
+		
+		//loop over added words, check if they are in the DB
+		for(Map.Entry<String, Integer> entry : wordsNewSent.entrySet()) {
+			//search in the words from DB Map
+			String wAdded = entry.getKey();
+			WordRank w = wordsCountDB.get(wAdded);
+			
+			if (w == null) { //the word is not in the DB
+				wordRankDAO.saveUpdateWord( new WordRank(wAdded, entry.getValue()) );
+			}
+			else { //counter in DB + counter new insertions 
+				w.setCounter(w.getCounter() + entry.getValue());
+				wordRankDAO.saveUpdateWord(w);
+			}
+		}
+	}
 
+	
+	private Map<String, Integer> countWordsSentence(String[] words){
+		Map<String, Integer> wordsCounted = new HashMap<String, Integer>();
+		
+		for(String w : words) {
+			Integer count = wordsCounted.get(w);
+			if(count == null) {
+				wordsCounted.put(w, 1);
+			}
+			else {
+				wordsCounted.put(w, count+1);
+			}
+		}
+		
+		return wordsCounted;
+	}
 }

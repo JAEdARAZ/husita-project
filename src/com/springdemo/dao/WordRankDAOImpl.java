@@ -40,5 +40,17 @@ public class WordRankDAOImpl implements WordRankDAO {
 		Session currentSession = sessionFactory.getCurrentSession();
 		currentSession.saveOrUpdate(w);
 	}
+
+	@Override
+	public void decreaseCounter(String removedWord, int diffCounter) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		//get word to decrease counter
+		Query <WordRank >theQuery = currentSession.createQuery("select w from WordRank w where w.wordEsp = :removedWord", WordRank.class);
+		theQuery.setParameter("removedWord", removedWord);
+		WordRank w = theQuery.uniqueResult();
+		
+		w.setCounter(w.getCounter()-diffCounter);
+	}
 	
 }
