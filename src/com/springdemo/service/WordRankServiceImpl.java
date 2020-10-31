@@ -1,11 +1,9 @@
 package com.springdemo.service;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -22,8 +20,8 @@ public class WordRankServiceImpl implements WordRankService {
 	@Autowired
 	private WordRankDAO wordRankDAO;
 	
-	@Value("${words.example}")
-	private String[] wordsExamplePrint;
+	@Value("#{'${avoid.words}'.split(',')}")
+	private List<String> wordsToAvoid;
 
 	
 	@Override
@@ -43,6 +41,9 @@ public class WordRankServiceImpl implements WordRankService {
 	public void processAddedWords(String areaTranslations) {
 		//clean areaTranslations so I have a Map with <word, count>
 		Map<String, Integer> wordsAdded = processAreaTranslations(areaTranslations);
+		
+		//clean words that are found in the avoidable list (properties file)
+		wordsAdded.keySet().removeAll(wordsToAvoid);
 		
 		//recover all words from the table and set them in a Map
 		List<WordRank> allWords = getAllWords();
@@ -83,6 +84,9 @@ public class WordRankServiceImpl implements WordRankService {
 		newSentSpanish = newSentSpanish.trim();
 		String[] ArrNewSent = newSentSpanish.split(" ");
 		countWordsSentence(diffCounter, ArrNewSent, 1);
+		
+		//clean words that are found in the avoidable list (properties file)
+		diffCounter.keySet().removeAll(wordsToAvoid);
 		
 		//get all words from DB
 		List<WordRank> allWords = getAllWords();
@@ -161,4 +165,5 @@ public class WordRankServiceImpl implements WordRankService {
 			}
 		}
 	}
+	
 }
