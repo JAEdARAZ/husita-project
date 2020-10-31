@@ -17,16 +17,34 @@
 				var translations = $("#areaTranslations").val();
 				
 				//remove # in case it's not the first time check is used
-				translations = translations.replaceAll("# ","");
-				translations = translations.replaceAll(" #","");
+				//translations = translations.replaceAll("# ","");
+				//translations = translations.replaceAll(" #","");
 				translations = translations.split("\n");
 				
 				//remove empty values
 				translations = translations.filter(function(e){return e});
 				
 				//what's between # will go to DB as a translation
-				translations.forEach((val, index) => translations[index] = "# " + val + " #");
+				var btnSaveDisabled = false;
+				
+				translations.forEach( function(value, index, array) {
+					value = value.replaceAll("#","");
+					value = value.trim();
+					
+					if(value.indexOf('-') < 0){
+						alert("all translations need the separator '-'");
+						array[index] = value;
+						btnSaveDisabled = true;
+					}
+					else{
+						array[index] = "# " + value + " #";						
+					}
+				});
+				
+				//rewrite with # and able/disable save button (if '-' in every translation)
 				$("#areaTranslations").val(translations.join("\n"));
+				
+				$("#btnSave").prop("disabled",btnSaveDisabled);
 		    }); 
 		});
 	</script>
@@ -60,7 +78,7 @@
 		</div>
 		
 		<div class="text-center">
-			<input type="submit" role="button" class="btn btn-success btn-lg mt-2" value="SAVE!" />
+			<input id="btnSave" type="submit" role="button" class="btn btn-success btn-lg mt-2" value="SAVE!" disabled />
 		</div>
 	</form>
 
