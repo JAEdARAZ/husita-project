@@ -15,10 +15,6 @@
 		$(document).ready(function(){
 			$("#checkTranslations").click(function(){
 				var translations = $("#areaTranslations").val();
-				
-				//remove # in case it's not the first time check is used
-				//translations = translations.replaceAll("# ","");
-				//translations = translations.replaceAll(" #","");
 				translations = translations.split("\n");
 				
 				//remove empty values
@@ -30,6 +26,7 @@
 				translations.forEach( function(value, index, array) {
 					value = value.replaceAll("#","");
 					value = value.trim();
+					value = value.toLowerCase(); 
 					
 					if(value.indexOf('-') < 0){
 						alert("all translations need the separator '-'");
@@ -44,8 +41,16 @@
 				//rewrite with # and able/disable save button (if '-' in every translation)
 				$("#areaTranslations").val(translations.join("\n"));
 				
-				$("#btnSave").prop("disabled",btnSaveDisabled);
+				$("#btnSave").prop("disabled", btnSaveDisabled);
 		    }); 
+
+			
+			//if the button is enabled whey typing, it gets disabled (force CHECK)
+			$("#areaTranslations").on("keyup", function(e) {
+				if(!$("#btnSave").attr("disabled")){
+					$("#btnSave").prop("disabled", true);
+				}
+			})
 		});
 	</script>
 </head>
