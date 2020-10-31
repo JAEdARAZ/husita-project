@@ -14,4 +14,6 @@ public interface WordRankService {
 
 	public void processUpdatedSentence(String oldSentSpanish, String newSentSpanish);
 
+	public void countersDeletedSentence(String sentSpanish);
+
 }

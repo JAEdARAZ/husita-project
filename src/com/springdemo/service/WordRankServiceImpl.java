@@ -1,7 +1,6 @@
 package com.springdemo.service;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -110,6 +109,26 @@ public class WordRankServiceImpl implements WordRankService {
 	}
 	
 	
+	@Override
+	@Transactional
+	public void countersDeletedSentence(String sentSpanish) {
+		Map<String, Integer> wordsCounter = new HashMap<String, Integer>();
+		
+		//words in sentence pair <word, appearances>
+		sentSpanish = sentSpanish.trim();
+		String[] ArrSentSpanish = sentSpanish.split(" ");
+		countWordsSentence(wordsCounter, ArrSentSpanish, -1);
+		
+		//clean words that are found in the avoidable list (properties file)
+		wordsCounter.keySet().removeAll(wordsToAvoid);
+		
+		//decrease counters
+		for(Map.Entry<String, Integer> entry : wordsCounter.entrySet()) {
+			wordRankDAO.decreaseCounter(entry.getKey(), entry.getValue());
+		}
+	}
+	
+	
 	private Map<String, Integer> processAreaTranslations(String areaTranslations) {
 		//remove # and split to have translations in an array
 		areaTranslations = areaTranslations.replace("#", "");
@@ -165,5 +184,5 @@ public class WordRankServiceImpl implements WordRankService {
 			}
 		}
 	}
-	
+
 }

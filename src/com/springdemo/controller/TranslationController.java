@@ -71,6 +71,9 @@ public class TranslationController {
 	
 	@GetMapping("/deleteTranslation")
 	public String deleteTranslation(@RequestParam("translationId") int theId, Model theModel) {
+		Translation deletedTranslation = translationService.getTranslation(theId);
+		wordRankService.countersDeletedSentence(deletedTranslation.getSentSpanish());
+		
 		translationService.deleteTranslation(theId);
 		
 		return "redirect:/translation/list";

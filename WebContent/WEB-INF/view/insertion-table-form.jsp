@@ -12,6 +12,16 @@
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script type="text/javascript">
+		function removeAccents(translation) {
+			translation = translation.replaceAll("á","a");
+			translation = translation.replaceAll("é","e");
+			translation = translation.replaceAll("í","i");
+			translation = translation.replaceAll("ó","o");
+			translation = translation.replaceAll("ú","u");
+			
+			return translation;
+		}
+	
 		$(document).ready(function(){
 			$("#checkTranslations").click(function(){
 				var translations = $("#areaTranslations").val();
@@ -26,8 +36,9 @@
 				translations.forEach( function(value, index, array) {
 					value = value.replaceAll("#","");
 					value = value.trim();
-					value = value.toLowerCase(); 
-					
+					value = value.toLowerCase();
+					value = removeAccents(value);
+										
 					if(value.indexOf('-') < 0){
 						alert("all translations need the separator '-'");
 						array[index] = value;

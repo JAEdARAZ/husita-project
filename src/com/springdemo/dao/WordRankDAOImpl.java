@@ -21,7 +21,7 @@ public class WordRankDAOImpl implements WordRankDAO {
 		Session currentSession = sessionFactory.getCurrentSession();
 		
 		//order alphabetically
-		Query <WordRank> theQuery = currentSession.createQuery("from WordRank order by counter desc", WordRank.class);
+		Query <WordRank> theQuery = currentSession.createQuery("from WordRank where counter>0 order by counter desc", WordRank.class);
 		theQuery.setMaxResults(20);
 		
 		return theQuery.getResultList();
@@ -50,7 +50,9 @@ public class WordRankDAOImpl implements WordRankDAO {
 		theQuery.setParameter("removedWord", removedWord);
 		WordRank w = theQuery.uniqueResult();
 		
-		w.setCounter(w.getCounter()+diffCounter); //diffCounter has negative value
+		if(w!=null) {
+			w.setCounter(w.getCounter()+diffCounter); //diffCounter has negative value
+		}
 	}
 	
 }
