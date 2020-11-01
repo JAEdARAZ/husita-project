@@ -77,12 +77,11 @@ public class TranslationServiceImpl implements TranslationService {
 		
 		for(String t : translations) {
 			t = t.replace("#", "");
-			t = t.trim();
 			String[] sentenceEngEsp = t.split("-");
 			
 			Translation auxTrans = new Translation();
-			auxTrans.setSentEnglish(sentenceEngEsp[0]);
-			auxTrans.setSentSpanish(sentenceEngEsp[1]);
+			auxTrans.setSentEnglish(sentenceEngEsp[0].trim());
+			auxTrans.setSentSpanish(sentenceEngEsp[1].trim());
 			auxTrans.setDate(new Timestamp(now));
 			
 			translationsToInsert.add(auxTrans);
